@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Function will check for prime number
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+// it will check the rearranged array
+vector<int> rearrange(vector<int>& arr) {
+    vector<int> p, nonP; // for primes and non primes
+
+    for (int n : arr) {
+        if (isPrime(n)) {
+            p.push_back(n);
+        } else {
+            nonP.push_back(n);
+        }
+    }
+
+    // Sorting prime numbers in ascending order and non-prime numbers in descending order
+    sort(p.begin(), p.end());
+    sort(nonP.rbegin(), nonP.rend());
+
+    // Starting with the largest prime, then add non-prime number, then the smallest prime
+    vector<int> result;
+    if (!p.empty()) {
+        result.push_back(p.back()); // Largest prime number at the start
+    }
+    result.insert(result.end(), nonP.begin(), nonP.end());
+    if (!p.empty()) {
+        result.push_back(p.front()); // Smallest prime at the end
+    }
+
+    return result;
+}
+
+int main() {
+    vector<int> arr = {1,6, 4, 13, 9, 3};
+    vector<int> result = rearrange(arr);
+    for (int n: result) {
+        cout << n << " ";
+    }
+    return 0;
+}

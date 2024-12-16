@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n = 9; // no of stars
+    int spaces = n / 2; // it will create no of spaces
+    int stars = 1; // just to initiate the stars
+
+ // code for printing first half
+
+     for (int i = 1; i < (n + 1) / 2; ++i) {
+
+        for (int j = 1; j <= spaces; ++j) {
+            cout << " ";
+        }
+      
+        for (int j = 1; j <= stars; ++j) {
+            cout << "*";
+        }
+        cout << endl;
+        spaces--; 
+        stars += 2;
+    }
+
+    spaces = 1;
+    stars = n - 2;
+
+   // code for printing second half of the pattern
+
+    for (int i = 1; i < (n + 1) / 2; ++i) {
+        
+        for (int j = 1; j <= spaces; ++j) {
+            cout << " ";
+        }
+      
+        for (int j = 1; j <= stars; ++j) {
+            cout << "*";
+        }
+        cout << endl;
+        spaces++; 
+        stars -= 2; 
+    }
+
+    return 0;
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" required />
+            </div>
+        
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required />
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <p id="status"></p>
+        <hr />
+        <h3>Employee List</h3>
+        <div id="employeeList"></div>
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+#employeeList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.employee-card {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+
+    const userData = { name, email };
+
+    // POST request to the API to create a user
+    fetch("https://jsonplaceholder.typicode.com/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById("status").innerHTML = "User Registered Successfully!";
+            console.log("User Registered:", data);
+        })
+        .catch((error) => {
+            document.getElementById("status").innerHTML = "Error registering user.";
+            console.error("Error:", error);
+        });
+
+    // Clear form after submission
+    document.getElementById("registerForm").reset();
+});
+
+// GET request to fetch employee data
+fetch("https://jsonplaceholder.typicode.com/users")
+    .then((response) => response.json())
+    .then((data) => {
+        const employeeList = document.getElementById("employeeList");
+        data.forEach((employee) => {
+            const employeeCard = document.createElement("div");
+            employeeCard.classList.add("employee-card");
+            employeeCard.innerHTML = `
+                <h4>${employee.name}</h4>
+                <p>${employee.email}</p>
+            `;
+            employeeList.appendChild(employeeCard);
+        });
+    })
+    .catch((error) => {
+        console.error("Error fetching employees:", error);
+    });
